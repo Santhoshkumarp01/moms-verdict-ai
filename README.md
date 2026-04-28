@@ -197,28 +197,28 @@ Gemini has context limits and latency increases with input size. Chunking keeps 
 
 ---
 
-## Tooling
+## Tooling & AI Workflow
 
 | Tool | Role |
 |------|------|
-| Google Gemini 2.5 Flash | LLM for structured extraction and bilingual generation |
+| Google Gemini 2.5 Flash | Structured extraction and bilingual generation |
 | FastAPI | REST API layer |
 | Pydantic v2 | Schema validation and type enforcement |
 | Streamlit | Demo UI |
 | python-dotenv | Environment variable management |
-| Kiro (AI IDE) | Used for pair-coding, scaffolding, and iterative prompt refinement |
+| Kiro (AI IDE) | Project scaffolding and iterative development |
 
-**How Kiro was used:**
-- Initial project scaffold generated via agent loop from a detailed spec prompt
-- Prompt engineering iterated manually — the anti-hallucination instructions and JSON enforcement were written and tested by hand
-- Confidence adjustment logic and deduplication written manually after observing LLM output patterns
-- Eval rubric designed manually; evaluator scaffolded with AI assistance then refined
+**How I used them:**
+Gemini was prompted with strict JSON format instructions and anti-hallucination rules to produce structured verdicts including summaries, pros/cons, sentiment, and confidence. Prompts were iteratively refined to enforce "I don't know" behavior on uncertain inputs and to generate natural Arabic rather than literal translations. Kiro was used to bootstrap the project structure; validation logic, chunking, confidence adjustment, and the eval rubric were all written and tuned manually.
 
-**What worked:** Agent loops for boilerplate (FastAPI setup, Pydantic schemas, file structure). Fast iteration on prompt wording.
+**What worked:**
+Structured prompting significantly improved output reliability. Chunking made 200-review inputs tractable. Adding post-LLM confidence adjustment based on input signals (noise, review count, sentiment conflict) made uncertainty handling trustworthy.
 
-**What didn't:** First-pass model name was wrong (`gemini-1.5-flash` deprecated). Fixed by querying `list_models()` directly.
+**What didn't work initially:**
+Early prompts produced invalid JSON — fixed with stricter format enforcement. Arabic output was initially literal — fixed by explicitly instructing natural language generation. The model was sometimes overconfident on weak inputs — addressed by the confidence adjustment layer.
 
-**Where I overruled the agent:** Confidence adjustment logic — the agent suggested a simpler version that didn't account for sentiment conflict. Rewrote it manually.
+**Where I intervened:**
+Added the validation and retry layer to catch malformed outputs. Designed the 12 eval test cases manually to cover real failure modes. Rewrote the confidence scoring logic after the agent's first version didn't account for sentiment conflict.
 
 ---
 
