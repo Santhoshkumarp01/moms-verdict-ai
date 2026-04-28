@@ -12,6 +12,14 @@ Mom's Verdict AI takes a list of product reviews and returns a structured verdic
 
 ---
 
+## Demo Video
+
+Watch the 3-minute walkthrough: [https://www.loom.com/share/033794917ccf45488c976ea2052ff607](https://www.loom.com/share/033794917ccf45488c976ea2052ff607)
+
+Covers: normal case (high confidence), mixed reviews (uncertainty handling), edge cases (noisy / limited input), and system design overview.
+
+---
+
 ## Setup (under 5 minutes)
 
 ```bash
